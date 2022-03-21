@@ -5,6 +5,8 @@ import Goods from '@/view/Goods'
 import User from '@/view/User'
 import Customer from '@/view/Customer'
 import PurchaseHistory from '@/view/PurchaseHistory'
+import GoodsCategory from '@/view/GoodsCategory'
+import Statistics from '@/view/Statistics'
 import Log from '@/view/Log'
 import TestPage from '@/view/TestPage'
 
@@ -39,6 +41,14 @@ export default new Router({
     path: '/log',
     name: 'log',
     component: Log
+  }, {
+    path: '/statistics',
+    name: 'statistics',
+    component: Statistics
+  }, {
+    path: '/goodsCategory',
+    name: 'goodsCategory',
+    component: GoodsCategory
   }, {
     path: '/test',
     name: 'test',

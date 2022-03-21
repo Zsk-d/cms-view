@@ -29,6 +29,11 @@
             icon: "el-icon-s-goods"
           },
           {
+            index: "goodsCategory",
+            name: "商品分类",
+            icon: "el-icon-s-grid"
+          },
+          {
             index: "ph",
             name: "销售记录",
             icon: "el-icon-s-order"
@@ -37,6 +42,11 @@
             index: "user",
             name: "用户管理",
             icon: "el-icon-user-solid"
+          },
+          {
+            index: "statistics",
+            name: "数据统计",
+            icon: "el-icon-s-data"
           },
           {
             index: "log",

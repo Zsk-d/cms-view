@@ -89,6 +89,9 @@
                     pageSize: this.table.pageSize,
                     params: params
                 };
+                if(this.option.reqEx){
+                    req = Object.assign(req,this.option.reqEx);
+                }
                 this.tableLoading = true;
                 let okCb = res => {
                     if (res && res.status == 200) {

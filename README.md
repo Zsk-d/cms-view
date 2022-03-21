@@ -1,6 +1,6 @@
-# cms
+# cms-view
 
-> A ZhuLin CMS Project
+> A ZhuLin CMS-View Project
 
 
 ## 项目配置

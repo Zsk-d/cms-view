@@ -1,27 +1,9 @@
 <template>
   <div>
     <el-card>
-      <div slot="header" class="clearfix">
-        <span>会员查询</span>
+      <div class="clearfix">
+        <span>商品分类统计</span>
       </div>
-      <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="会员名">
-          <el-input v-model="searchForm.params.name" :clearable="true" placeholder="会员名" style="width:150px;"></el-input>
-        </el-form-item>
-        <el-form-item label="会员编号">
-          <el-input v-model="searchForm.params.cid" :clearable="true" placeholder="会员编号" style="width:150px;"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号">
-          <el-input v-model="searchForm.params.tel" :clearable="true" placeholder="手机号"  style="width:140px;"></el-input>
-        </el-form-item>
-        <el-form-item label="住址">
-          <el-input v-model="searchForm.params.loc" :clearable="true" placeholder="住址"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
-          <el-button type="primary" @click="addUser" icon="el-icon-plus">会员注册</el-button>
-        </el-form-item>
-      </el-form>
     </el-card>
     <SearchTable :option="tableOption" style="margin-top:10px;" ref="st"></SearchTable>
     <AddCustomerDialog ref="aud" :cb="addCb"></AddCustomerDialog>
@@ -40,97 +22,34 @@
         dialogVisible: false,
         searchForm: {
           params: {
-            table: "customer"
+            table: "goods"
           }
         },
         tableOption: {
-          url: urls.SEARCH_DATA,
-          maxHeight: window.innerHeight - 310,
+          url: urls.GET_GROUP,
+          reqEx:{
+            groupParams:{_id:"$category",priceTotal: {"$sum": "$charge"},countTotal: {"$sum": 1}}
+          },
+          maxHeight: window.innerHeight - 230,
           cols: [{
               type: "index",
               label: "序号",
               align: "center",
               headerAlign: "center",
-              width: "60px"
+              width: "80px"
             },
             {
-              prop: "cid",
-              label: "会员编号",
-              align: "center",
-              width: "100px",
-              headerAlign: "center",
-            },
-            {
-              prop: "name",
-              label: "会员名",
-              width: "100px",
+              prop: "_id",
+              label: "分类名",
               align: "center",
               headerAlign: "center",
             },
             {
-              prop: "sex",
-              label: "性别",
+              prop: "countTotal",
+              label: "商品种类数量",
               align: "center",
               headerAlign: "center",
-              width: "60px",
-              formatter(row) {
-                return row.sex == "1" ? "男" : "女";
-              }
-            },
-            {
-              prop: "loc",
-              label: "住址",
-              align: "center",
-              headerAlign: "center",
-            },
-            {
-              prop: "mail",
-              label: "邮箱",
-              align: "center",
-              headerAlign: "center",
-            },
-            {
-              prop: "tel",
-              label: "手机号",
-              align: "center",
-              width: "115px",
-              headerAlign: "center",
-            },
-            {
-              prop: "createTime",
-              label: "注册时间",
-              align: "center",
-              headerAlign: "center",
-              width: "175px",
-            },
-            {
-              prop: "remarks",
-              label: "备注",
-              align: "center",
-              headerAlign: "center",
-            },
-            {
-              prop: "username",
-              label: "操作",
-              align: "center",
-              headerAlign: "center",
-              hasBtn: true,
-              width: "160px",
-              btns: [{
-                name: "修改",
-                size: "small",
-                func(index, tableData) {
-                  self.$refs.aud.open(util.deepCopy(tableData[index]));
-                }
-              }, {
-                name: "删除",
-                type: "danger",
-                size: "small",
-                func(index, tableData) {
-                  self.resetPwdAndDel(index, tableData, 0)
-                }
-              }, ]
-            },
+            }
           ],
         },
         addCb() {

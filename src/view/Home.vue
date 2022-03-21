@@ -3,7 +3,7 @@
     <el-row>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-          <span>统 计</span>
+          <span>总 览</span>
         </div>
         <el-row style="text-align:center;">
           <el-col :span="parseInt(24/statusBar.length)" v-for="item in statusBar" :key="item.name">

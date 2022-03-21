@@ -10,6 +10,7 @@ urls.SIGNUP = "/signup";
 urls.SEARCH_DATA = "/data";
 urls.INSERT_DATA = "/data/insert";
 urls.GET_DATA = "/data/item";
+urls.GET_GROUP = "/data/group";
 
 urls.GET_COUNT = "/count";
 urls.DELETE_DATA = "/data/del";
