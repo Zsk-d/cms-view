@@ -100,7 +100,7 @@
             },
             {
               prop: "createTime",
-              label: "注册时间",
+              label: "消费时间",
               align: "center",
               headerAlign: "center",
               width: "185px",
@@ -153,9 +153,9 @@
       // type 0 del, 1 reset
       resetPwdAndDel(index, pageData, type) {
         let self = this;
-        let user = pageData[index];
+        let row = pageData[index];
         this.$confirm(
-            `确定${type==0?'删除':'重置'}用户[${user.username}${user.nickname?(' - ' + user.nickname):""}]${type==1?'的密码为123456':''}?`,
+            `确定删除记录?`,
             '注意', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -175,12 +175,12 @@
             let errCb = err => {
               util.showMessage(this, "处理失败 " + err, util.elMessageType.error);
             };
-            util.getJsonPost(type == 0 ? urls.DELETE_DATA : urls.RESET_PASSWORD, okCb, errCb, type == 1 ? {
-              username: user.username
-            } : {
-              table: "user",
+            util.getJsonPost(urls.DELETE_DATA, okCb, errCb,{
+              table: "ph",
               where: {
-                username: user.username
+                gid:row.gid,
+                cid:row.cid,
+                createTime: row.createTime
               }
             });
           })

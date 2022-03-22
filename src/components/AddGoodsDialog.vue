@@ -71,7 +71,7 @@
         let self = this;
         if (this.form.name.trim() != '' &&
           this.form.gid.trim() != '' &&
-          this.form.count.trim() != '' &&
+          (typeof(this.form.count) != 'number' && this.form.count.trim() !='' || this.form.count >= 0) &&
           this.form.category.trim() != '' &&
           this.form.charge.trim() != '' &&
           this.form.status.trim() != ''

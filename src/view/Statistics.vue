@@ -102,7 +102,19 @@
 
       },
       initCustomerCr() {
-
+        let req = {
+          "params": {
+            "table": "ph"
+          },
+          "offset": 0,
+          "pageSize": 999999,
+          "groupParams": {
+            "_id": "$cname",
+            "priceTotal": {
+              "$sum": "$total"
+            }
+          }
+        };
         let customerCr = this.$echarts.init(document.getElementById('customerCr'))
         let option = {
           xAxis: {
@@ -113,7 +125,7 @@
             inverse: true,
             animationDuration: 300,
             animationDurationUpdate: 300,
-            max: 2 // only the largest 3 bars will be displayed
+            max: 4 // only the largest 3 bars will be displayed
           },
           series: [{
             realtimeSort: true,
@@ -134,7 +146,21 @@
           animationEasing: 'linear',
           animationEasingUpdate: 'linear'
         };
-        customerCr.setOption(option);
+        util.getJsonPost(urls.GET_GROUP, res => {
+          if (res.status == 200) {
+            let idData = [];
+            let data = [];
+            res.data.tableData.forEach(item => {
+              idData.push(item._id);
+              data.push(item.priceTotal);
+            });
+            option.yAxis.data = idData;
+            option.series[0].data = data;
+            customerCr.setOption(option);
+          } else {
+
+          }
+        }, err => {}, req);
       }
     },
     mounted() {

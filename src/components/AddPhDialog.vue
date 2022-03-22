@@ -3,16 +3,18 @@
     width="520px" center :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form ref="form" label-position="left" :model="form" label-width="120px">
       <el-form-item label="商品编号">
-        <el-autocomplete v-model="form.gid"  @blur="inputBlur('gid','gname','goods','name')" :fetch-suggestions="gidQuerySearch" placeholder="商品编号"
-          :trigger-on-focus="false" @select="handleSelect('gid','gname','goods','name')" :readonly="!addAction">
+        <el-autocomplete v-model="form.gid" @blur="inputBlur('gid','gname','goods','name')"
+          :fetch-suggestions="gidQuerySearch" placeholder="商品编号" :trigger-on-focus="false"
+          @select="handleSelect('gid','gname','goods','name')" :readonly="!addAction">
         </el-autocomplete>
       </el-form-item>
       <el-form-item label="商品名">
         <el-input v-model="form.gname" :readonly="true"></el-input>
       </el-form-item>
       <el-form-item label="会员编号">
-        <el-autocomplete v-model="form.cid" @blur="inputBlur('cid','cname','customer','name')" :fetch-suggestions="cidQuerySearch" placeholder="会员编号"
-          :trigger-on-focus="false" @select="handleSelect('cid','cname','customer','name')" :readonly="!addAction">
+        <el-autocomplete v-model="form.cid" @blur="inputBlur('cid','cname','customer','name')"
+          :fetch-suggestions="cidQuerySearch" placeholder="会员编号" :trigger-on-focus="false"
+          @select="handleSelect('cid','cname','customer','name')" :readonly="!addAction">
         </el-autocomplete>
       </el-form-item>
       <el-form-item label="会员名">
@@ -47,14 +49,16 @@
         addAction: true,
         show: false,
         form: {
-            gid: "",
-            gname: "",
-            cid: "",
-            cname: "",
-            count: "",
-            total: "",
-            remarks: ""
-          },
+          gid: "",
+          gname: "",
+          cid: "",
+          cname: "",
+          count: "",
+          total: "",
+          remarks: ""
+        },
+        gid:null,
+        lastCount:null,
         action: {
           btnDisabled: false
         }
@@ -74,29 +78,41 @@
             remarks: ""
           };
         }
+        this.gid = null;
+        this.lastCount = null;
       },
     },
     methods: {
-      inputBlur(id, updateId, table, queryKey){
-        if(!this.form[id]){
+      inputBlur(id, updateId, table, queryKey) {
+        if (!this.form[id]) {
           this.form[updateId] = '';
-        }else{
+        } else {
           this.reHandleSelect(id, updateId, table, queryKey);
         }
       },
       getTotal() {
         let self = this;
         if (this.form.gid.trim() && this.form.count > 0) {
-          Util.method.getData("goods", {gid:this.form.gid.trim()}, false, (res) => {
-            let data = [];
+          Util.method.getData("goods", {
+            gid: this.form.gid.trim()
+          }, false, (res) => {
             if (res.status == 200 && res.data) {
-              self.$set(self.form, 'total', parseInt(self.form.count) * parseInt(res.data[0].charge));
+              let buyCount = parseInt(self.form.count);
+              let goodsCount = parseInt(res.data[0].count);
+              let charge = parseInt(res.data[0].charge);
+              if (goodsCount < buyCount) {
+                self.$set(self.form, 'count', goodsCount);
+                buyCount = goodsCount;
+              }
+              self.$set(self.form, 'total', buyCount * charge);
+              self.gid = this.form.gid.trim();
+              self.lastCount = goodsCount - buyCount;
             }
           });
         }
       },
       handleSelect(id, updateId, table, queryKey) {
-        if(!queryKey){
+        if (!queryKey) {
           return false;
         }
         let self = this;
@@ -104,13 +120,13 @@
           if (res.length > 0) {
             // self.form[updateId] = res[0].value;
             self.$set(self.form, updateId, res[0].value);
-          }else{
+          } else {
             self.$set(self.form, updateId, '');
           }
         });
       },
       reHandleSelect(id, updateId, table, queryKey) {
-        if(!queryKey){
+        if (!queryKey) {
           return false;
         }
         let self = this;
@@ -118,7 +134,7 @@
           if (res.length > 0) {
             // self.form[updateId] = res[0].value;
             self.$set(self.form, updateId, res[0].value);
-          }else{
+          } else {
             self.$set(self.form, updateId, '');
           }
         });
@@ -166,13 +182,14 @@
           this.form.gname.trim() != '' &&
           this.form.cid.trim() != '' &&
           this.form.cname.trim() != '' &&
-          this.form.count.trim() != ''
+          (typeof (this.form.count) != 'number' && this.form.count.trim() != '' || this.form.count > 0)
         ) {
           self.action.btnDisabled = true;
           // 请求新增
           let okCb = res => {
             if (res.status == 200) {
               Util.showMessage(self, "操作成功!", Util.elMessageType.sec);
+              Util.method.updateData("goods","gid",{'gid':this.gid,'count':this.lastCount});
               self.show = false;
               self.cb();
             } else {
@@ -185,14 +202,10 @@
             self.action.btnDisabled = false;
           }
           if (this.addAction) {
-            Util.method.addData(self.table, {
-              key: "cid",
-              name: "会员编号"
-            }, this.form, okCb, errCb);
+            Util.method.addData(self.table, null, this.form, okCb, errCb);
           } else {
             Util.method.updateData(self.table, "cid", this.form, okCb, errCb);
           }
-
         } else {
           Util.showMessage(self, "除备注外其他必填", Util.elMessageType.error);
         }
