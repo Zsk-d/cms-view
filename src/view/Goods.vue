@@ -22,7 +22,6 @@
     </el-card>
     <SearchTable :option="tableOption" style="margin-top:10px;" ref="st"></SearchTable>
     <AddGoodsDialog ref="aud" :cb="addCb"></AddGoodsDialog>
-    <UserInfoUpdateDialog ref="uiud" :cb="updateInfoCb"></UserInfoUpdateDialog>
   </div>
 </template>
 
@@ -31,7 +30,6 @@
   import urls from "@/urls.js"
   import SearchTable from "@/components/SearchTable.vue";
   import AddGoodsDialog from "@/components/AddGoodsDialog.vue";
-  import UserInfoUpdateDialog from "@/components/UserInfoUpdateDialog.vue";
   export default {
     data() {
       let self = this;
@@ -161,8 +159,13 @@
             },
           ],
         },
-        addCb() {
+        addCb(form,isAdd) {
           self.search();
+          if(isAdd){
+            util.method.logAdd(`添加了商品[${form.name}]`);
+          }else{
+            util.method.logEdit(`修改了商品[${form.name}]`);
+          }
         },
         updateInfoCb(info) {
           self.search();
@@ -194,6 +197,7 @@
               if (res.status == 200) {
                 util.showMessage(this, "操作成功", util.elMessageType.sec);
                 self.search();
+                util.method.logDel(`删除了商品[${row.name}]`);
               } else {
                 util.showMessage(this, "操作失败", util.elMessageType.error);
               }
@@ -221,7 +225,6 @@
     },
     components: {
       SearchTable,
-      UserInfoUpdateDialog,
       AddGoodsDialog
     }
   }

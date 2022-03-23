@@ -55,7 +55,7 @@
                 label: "序号",
                 align: "center",
                 headerAlign: "center",
-                width: "80px"
+                width: "60px"
               },
               {
                 prop: "cid",

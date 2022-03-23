@@ -112,11 +112,13 @@
             },
           ],
         },
-        addCb() {
+        addCb(form) {
           self.search();
+          util.method.logAdd(`添加了管理员用户[${form.username}]`);
         },
-        updateInfoCb(info){
+        updateInfoCb(form){
           self.search();
+          util.method.logEdit(`修改了管理员用户[${form.username}]`);
         }
       }
     },
@@ -145,6 +147,11 @@
               if (res.status == 200) {
                 util.showMessage(this, "操作成功", util.elMessageType.sec);
                 self.search();
+                if(type==0){
+                  util.method.logDel(`删除了管理员用户[${user.username}]`);
+                }else{
+                  util.method.logEdit(`重置了管理员用户[${user.username}]的密码`);
+                }
               } else {
                 util.showMessage(this, "操作失败", util.elMessageType.error);
               }

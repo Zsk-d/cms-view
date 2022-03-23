@@ -64,7 +64,7 @@ import Util from "@/util.js"
                     if(res.status == 200){
                         Util.showMessage(self,"用户增加成功!",Util.elMessageType.sec);
                         self.show = false;
-                        self.cb();
+                        self.cb(Util.deepCopy(this.form));
                     }else{
                         Util.showMessage(self,res.msg,Util.elMessageType.error);
                     }

@@ -79,7 +79,7 @@
             if (res.status == 200) {
               Util.showMessage(self, "操作成功!", Util.elMessageType.sec);
               self.show = false;
-              self.cb();
+              self.cb(Util.deepCopy(this.form),this.addAction);
             } else {
               Util.showMessage(self, res.msg, Util.elMessageType.error);
             }

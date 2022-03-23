@@ -63,6 +63,7 @@ import Urls from "@/urls.js"
                 let okCb = res=>{
                     if(res.status == 200){
                         Util.showMessage(self,"修改成功,即将退出",Util.elMessageType.sec);
+                        Util.method.logEdit(`修改了自己的密码`);
                         Util.logout();
                     }else{
                         Util.showMessage(self,res.msg,Util.elMessageType.error);

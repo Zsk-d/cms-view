@@ -55,6 +55,7 @@
         this.userinfo = util.getObjSession("userinfo");
         this.needLogin = false;
       }
+      this.$router.push('/home');
     },
     methods: {
       onLogOk(userinfo) {

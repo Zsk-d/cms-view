@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="CMS - 登录" :visible.sync="visible" width="500px" center :show-close="false"
+  <el-dialog title="店铺商品管理系统 - 登录" :visible.sync="visible" width="500px" center :show-close="false"
     :close-on-click-modal="false" :close-on-press-escape="false">
     <el-form ref="form" label-position="left" :model="form" label-width="80px">
       <el-form-item label="用户名">

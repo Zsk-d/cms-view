@@ -191,7 +191,7 @@
               Util.showMessage(self, "操作成功!", Util.elMessageType.sec);
               Util.method.updateData("goods","gid",{'gid':this.gid,'count':this.lastCount});
               self.show = false;
-              self.cb();
+              self.cb(Util.deepCopy(this.form),this.addAction);
             } else {
               Util.showMessage(self, res.msg, Util.elMessageType.error);
             }

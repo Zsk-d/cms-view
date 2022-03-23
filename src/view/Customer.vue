@@ -133,12 +133,14 @@
             },
           ],
         },
-        addCb() {
+        addCb(form,isAdd) {
           self.search();
+          if(isAdd){
+            util.method.logAdd(`添加了会员[${form.name}]`);
+          }else{
+            util.method.logEdit(`修改了会员[${form.name}]`);
+          }
         },
-        updateInfoCb(info) {
-          self.search();
-        }
       }
     },
     methods: {
@@ -153,7 +155,7 @@
         let self = this;
         let user = pageData[index];
         this.$confirm(
-            `确定${type==0?'删除':'重置'}用户[${user.username}${user.nickname?(' - ' + user.nickname):""}]${type==1?'的密码为123456':''}?`,
+            `确定删除会员[${user.name}]?`,
             '注意', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
@@ -166,6 +168,7 @@
               if (res.status == 200) {
                 util.showMessage(this, "操作成功", util.elMessageType.sec);
                 self.search();
+                util.method.logDel(`删除了会员[${user.name}]`);
               } else {
                 util.showMessage(this, "操作失败", util.elMessageType.error);
               }

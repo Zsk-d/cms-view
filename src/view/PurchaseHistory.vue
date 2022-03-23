@@ -6,15 +6,15 @@
       </div>
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="商品编号">
-          <el-input v-model="searchForm.params.name" :clearable="true" placeholder="商品编号" style="width:150px;">
+          <el-input v-model="searchForm.params.gid" :clearable="true" placeholder="商品编号" style="width:150px;">
           </el-input>
         </el-form-item>
         <el-form-item label="商品名称">
-          <el-input v-model="searchForm.params.name" :clearable="true" placeholder="商品编号" style="width:150px;">
+          <el-input v-model="searchForm.params.gname" :clearable="true" placeholder="商品名称" style="width:150px;">
           </el-input>
         </el-form-item>
         <el-form-item label="会员名">
-          <el-input v-model="searchForm.params.name" :clearable="true" placeholder="会员名" style="width:150px;">
+          <el-input v-model="searchForm.params.cname" :clearable="true" placeholder="会员名" style="width:150px;">
           </el-input>
         </el-form-item>
         <el-form-item label="会员编号">
@@ -67,7 +67,7 @@
             {
               prop: "gname",
               label: "商品名",
-              width: "100px",
+              width: "150px",
               align: "center",
               headerAlign: "center",
             }, {
@@ -135,12 +135,14 @@
             },
           ],
         },
-        addCb() {
+        addCb(form,isAdd) {
           self.search();
+          if(isAdd){
+            util.method.logAdd(`添加了销售记录[${form.cname} - ${form.gname}]`);
+          }else{
+            util.method.logEdit(`修改了销售记录[${form.cname} - ${form.gname}]`);
+          }
         },
-        updateInfoCb(info) {
-          self.search();
-        }
       }
     },
     methods: {
@@ -168,6 +170,7 @@
               if (res.status == 200) {
                 util.showMessage(this, "操作成功", util.elMessageType.sec);
                 self.search();
+                util.method.logDel(`删除了销售记录[${form.cname} - ${form.gname}]`);
               } else {
                 util.showMessage(this, "操作失败", util.elMessageType.error);
               }

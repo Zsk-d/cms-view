@@ -125,7 +125,7 @@
             inverse: true,
             animationDuration: 300,
             animationDurationUpdate: 300,
-            max: 4 // only the largest 3 bars will be displayed
+            max: 9 // only the largest 3 bars will be displayed
           },
           series: [{
             realtimeSort: true,

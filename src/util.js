@@ -17,11 +17,9 @@ util.getFetch = (url, method, okCallback, errorCallback, data, headers) => {
       if (response.status == -1) {
         if (window.needLogin == 1) {
           window.needLogin = 1;
-          alert("需要重新登录!");
         }
         util.logout();
       } else if (response.status == -2) {
-        alert("账号在别处登录,当前账号已退出登录!");
         util.logout();
       } else {
         if (okCallback) okCallback(response);
@@ -117,7 +115,7 @@ util.numberTransColName = (number) => {
 }
 util.logout = () => {
   util.clearSession();
-  window.location.href = "/";
+  window.location.href = "./";
 }
 util.method = {
   changeSelfPassword(oldPassword, newPasssword, username, okCb, errCb) {
@@ -160,6 +158,26 @@ util.method = {
       where: where,
       isQuery:isQuery
     })
+  },
+  saveLog(action,msg){
+    let userinfo = util.getObjSession("userinfo")
+    let username = userinfo.username;
+    let nickname = userinfo.nickname;
+    util.method.addData("logs",null,{
+      username:username,
+      nickname:nickname,
+      action:action,
+      msg:msg
+    });
+  },
+  logDel(msg){
+    util.method.saveLog("删除",msg);
+  },
+  logAdd(msg){
+    util.method.saveLog("新增",msg);
+  },
+  logEdit(msg){
+    util.method.saveLog("编辑",msg);
   }
 };
 
