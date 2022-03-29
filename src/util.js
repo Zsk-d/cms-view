@@ -11,7 +11,7 @@ util.getFetch = (url, method, okCallback, errorCallback, data, headers) => {
   if (headers) {
     option.headers = headers;
   }
-  fetch(urls.serverAddr+urls.prev + url, option)
+  fetch(urls.prev + url, option)
     .then(response => response.json())
     .then(response => {
       if (response.status == -1) {
